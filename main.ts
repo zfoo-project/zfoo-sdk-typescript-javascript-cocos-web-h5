@@ -1,6 +1,6 @@
 import WebsocketHelloRequest from './zfoots/websocket/WebsocketHelloRequest';
 import WebsocketHelloResponse from './zfoots/websocket/WebsocketHelloResponse';
-import {connect, send, receiver, isWebsocketReady} from './websocket';
+import {connect, send, asyncAsk, receiver, isWebsocketReady} from './websocket';
 
 // 如果是在idea中运行，需要先安装插件：Run Configuration for TypeScript
 console.log("Hello world");
@@ -16,7 +16,7 @@ receiver(WebsocketHelloResponse.PROTOCOL_ID, it => {
 // 等待连接成功
 setInterval(() => test(), 1 * 1000);
 
-function test() {
+async function test() {
     if (!isWebsocketReady()) {
         console.log("waiting for websocket connected")
         return;
@@ -24,5 +24,11 @@ function test() {
     const request = new WebsocketHelloRequest();
     request.message = "这个是websocket发送的普通消息"
     send(request);
+
+    // 使用await语法发送一个消息
+    var myRequest = new WebsocketHelloRequest();
+    myRequest.message = "这个是使用await语法发送的消息";
+    var response: WebsocketHelloResponse = await asyncAsk(myRequest);
+    console.log("receive await message -> " + JSON.stringify(response));
 }
 
