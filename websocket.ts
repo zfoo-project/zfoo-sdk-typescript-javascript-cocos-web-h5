@@ -1,12 +1,11 @@
 import ByteBuffer from './zfoots/buffer/ByteBuffer';
 import SignalAttachment from './zfoots/attachment/SignalAttachment';
-import ProtocolManager from './zfoots/ProtocolManager.js';
-import Error from './zfoots/common/Error';
-import Message from './zfoots/common/Message';
-import Ping from './zfoots/common/Ping';
-import Pong from './zfoots/common/Pong';
-import {WebSocket} from "ws";
+import ProtocolManager from './zfoots/ProtocolManager';
+import * as WebSocket from "ws";
 
+
+// TODO: A heartbeat packet needs to be sent to the server every second, otherwise the server will actively disconnect
+// TODO: 需要每秒钟给服务器发个心跳包 Heartbeat，否则服务器会主动断开连接
 
 let pingTime: number = 0;
 let ws: WebSocket | null = null;
@@ -23,7 +22,7 @@ function reconnect() {
   }
   if (new Date().getTime() - pingTime < 3 * 60 * 1000) {
     // 每30秒发送一次心跳包
-    send(new Ping())
+    // send(new Ping())
     return;
   }
   ws.close(3999);
@@ -46,7 +45,7 @@ export function connect(wsUrl: string): WebSocket {
     console.log(new Date(), 'websocket open success');
 
     // websocket连接成功过后，先发送ping同步服务器时间，再发送登录请求
-    send(new Ping());
+    // send(new Ping());
 
     pingTime = new Date().getTime();
   };
@@ -71,16 +70,6 @@ export function connect(wsUrl: string): WebSocket {
       encodedPacketInfo.promiseResolve(packet);
       return;
     }
-    console.log(new Date(), "Websocket收到同步response <-- ", packet);
-    if (packet.protocolId() == Pong.PROTOCOL_ID) {
-      if (Number.isInteger(packet.time)) {
-        pingTime = packet.time;
-      } else {
-        pingTime = Number.parseInt(packet.time);
-      }
-      return;
-    }
-
     route(packet);
   };
 
@@ -117,11 +106,9 @@ export function send(packet: any, attachment: any = null) {
       ProtocolManager.write(buffer, packet);
       if (attachment == null) {
         buffer.writeBoolean(false);
-        console.log(new Date(), "Websocket发送同步request --> ", packet)
       } else {
         buffer.writeBoolean(true);
         ProtocolManager.write(buffer, attachment)
-        console.log(new Date(), "Websocket发送异步request --> ", packet)
       }
       const writeOffset = buffer.writeOffset;
       buffer.setWriteOffset(0);
@@ -173,7 +160,8 @@ export async function asyncAsk(packet: any): Promise<any> {
     if (att == null) {
       deleteList.push(key);
     }
-    if (currentTime - att.timestamp > 60000) {
+    const time = att == null ? 0 : att.timestamp;
+    if (currentTime - time > 60000) {
       deleteList.push(key);
     }
   });
