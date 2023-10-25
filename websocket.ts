@@ -5,10 +5,11 @@ import Error from './zfoots/common/Error';
 import Message from './zfoots/common/Message';
 import Ping from './zfoots/common/Ping';
 import Pong from './zfoots/common/Pong';
+import {WebSocket} from "ws";
 
 
 let pingTime: number = 0;
-let ws: WebSocket = null;
+let ws: WebSocket | null = null;
 let uuid: number = 0;
 
 const signalAttachmentMap: Map<number, EncodedPacketInfo> = new Map<number, EncodedPacketInfo>();
@@ -55,7 +56,7 @@ export function connect(wsUrl: string): WebSocket {
     const data = event.data;
 
     const buffer = new ByteBuffer();
-    buffer.writeBytes(data);
+    buffer.writeBytes(data as ArrayBuffer);
     buffer.setReadOffset(4);
     const packet = ProtocolManager.read(buffer);
 
@@ -96,10 +97,16 @@ export function connect(wsUrl: string): WebSocket {
 }
 
 export function isWebsocketReady(): boolean {
+  if (ws == null) {
+    return false;
+  }
   return ws.readyState == 1;
 }
 
 export function send(packet: any, attachment: any = null) {
+  if (ws == null) {
+    return;
+  }
   switch (ws.readyState) {
     case 0:
       console.log(new Date(), "0, ws connecting server");
@@ -138,7 +145,7 @@ export function send(packet: any, attachment: any = null) {
 class EncodedPacketInfo {
   promiseResolve: any;
   promiseReject: any;
-  attachment: SignalAttachment;
+  attachment: SignalAttachment | null = null;
 }
 
 export async function asyncAsk(packet: any): Promise<any> {
@@ -159,7 +166,14 @@ export async function asyncAsk(packet: any): Promise<any> {
   // 遍历删除旧的attachment
   const deleteList = new Array<number>();
   signalAttachmentMap.forEach((value, key) => {
-    if ((value != null) && (currentTime - value.attachment.timestamp > 60000)) {
+    if (value == null || value.attachment == null) {
+      deleteList.push(key);
+    }
+    const att = value.attachment;
+    if (att == null) {
+      deleteList.push(key);
+    }
+    if (currentTime - att.timestamp > 60000) {
       deleteList.push(key);
     }
   });
