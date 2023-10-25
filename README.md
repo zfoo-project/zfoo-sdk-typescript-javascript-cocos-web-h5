@@ -19,7 +19,7 @@ support TypeScript in Cocos
 - ask and await usage
 
 ```
-var response = await asyncAsk(request) as TcpHelloResponse;
+var response: WebsocketHelloResponse = await asyncAsk(request);
 ```
 
 - send packet
