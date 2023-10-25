@@ -26,9 +26,9 @@ async function test() {
     send(request);
 
     // 使用await语法发送一个消息
-    var myRequest = new WebsocketHelloRequest();
+    const myRequest = new WebsocketHelloRequest();
     myRequest.message = "这个是使用await语法发送的消息";
-    var response: WebsocketHelloResponse = await asyncAsk(myRequest);
+    const response: WebsocketHelloResponse = await asyncAsk(myRequest);
     console.log("receive await message -> " + JSON.stringify(response));
 }
 
