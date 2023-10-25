@@ -1,31 +1,33 @@
 
 
-class EmptyObject {
+class Pong {
 
-    
+    time: number = 0;
 
-    static PROTOCOL_ID: number = 0;
+    static PROTOCOL_ID: number = 104;
 
     protocolId(): number {
-        return EmptyObject.PROTOCOL_ID;
+        return Pong.PROTOCOL_ID;
     }
 
-    static write(buffer: any, packet: EmptyObject | null) {
+    static write(buffer: any, packet: Pong | null) {
         if (packet === null) {
             buffer.writeInt(0);
             return;
         }
         buffer.writeInt(-1);
+        buffer.writeLong(packet.time);
     }
 
-    static read(buffer: any): EmptyObject | null {
+    static read(buffer: any): Pong | null {
         const length = buffer.readInt();
         if (length === 0) {
             return null;
         }
         const beforeReadIndex = buffer.getReadOffset();
-        const packet = new EmptyObject();
-        
+        const packet = new Pong();
+        const result0 = buffer.readLong();
+        packet.time = result0;
         if (length > 0) {
             buffer.setReadOffset(beforeReadIndex + length);
         }
@@ -33,4 +35,4 @@ class EmptyObject {
     }
 }
 
-export default EmptyObject;
+export default Pong;
