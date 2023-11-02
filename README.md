@@ -27,3 +27,12 @@ var response: WebsocketHelloResponse = await asyncAsk(request);
 ```
 send(request)
 ```
+
+- install
+```
+nodejs
+
+If you are running it in idea, you need to install the plug-in first, Run Configuration for TypeScript
+
+The test environment of nodejs needs to modify the ByteBuffer to use the util.Text Encoder of nodejs
+```
