@@ -153,14 +153,16 @@ export async function asyncAsk(packet: any): Promise<any> {
   // 遍历删除旧的attachment
   const deleteList = new Array<number>();
   signalAttachmentMap.forEach((value, key) => {
-    if (value == null || value.attachment == null) {
+    if (value == null) {
       deleteList.push(key);
+      return;
     }
     const att = value.attachment;
     if (att == null) {
       deleteList.push(key);
+      return;
     }
-    const time = att == null ? 0 : att.timestamp;
+    const time = att.timestamp;
     if (currentTime - time > 60000) {
       deleteList.push(key);
     }
