@@ -63,11 +63,13 @@ export function connect(wsUrl: string): WebSocket {
     if (buffer.isReadable() && buffer.readBoolean()) {
       console.log(new Date(), "Websocket收到异步response <-- ", packet);
       attachment = ProtocolManager.read(buffer);
-      const encodedPacketInfo = signalAttachmentMap.get(attachment.signalId);
+      const signalId = attachment.signalId
+      const encodedPacketInfo = signalAttachmentMap.get(signalId);
       if (encodedPacketInfo == undefined) {
         throw "可能消息超时找不到对应的SignalAttachment:" + attachment;
       }
       encodedPacketInfo.promiseResolve(packet);
+      signalAttachmentMap.delete(signalId)
       return;
     }
     route(packet);
