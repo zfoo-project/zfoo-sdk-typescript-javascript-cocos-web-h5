@@ -1,3 +1,4 @@
+import IByteBuffer from '../IByteBuffer';
 
 
 class WebSocketObjectB {
@@ -10,7 +11,7 @@ class WebSocketObjectB {
         return WebSocketObjectB.PROTOCOL_ID;
     }
 
-    static write(buffer: any, packet: WebSocketObjectB | null) {
+    static write(buffer: IByteBuffer, packet: WebSocketObjectB | null) {
         if (packet === null) {
             buffer.writeInt(0);
             return;
@@ -19,7 +20,7 @@ class WebSocketObjectB {
         buffer.writeBoolean(packet.flag);
     }
 
-    static read(buffer: any): WebSocketObjectB | null {
+    static read(buffer: IByteBuffer): WebSocketObjectB | null {
         const length = buffer.readInt();
         if (length === 0) {
             return null;

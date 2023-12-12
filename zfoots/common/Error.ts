@@ -1,3 +1,4 @@
+import IByteBuffer from '../IByteBuffer';
 
 
 class Error {
@@ -12,7 +13,7 @@ class Error {
         return Error.PROTOCOL_ID;
     }
 
-    static write(buffer: any, packet: Error | null) {
+    static write(buffer: IByteBuffer, packet: Error | null) {
         if (packet === null) {
             buffer.writeInt(0);
             return;
@@ -23,7 +24,7 @@ class Error {
         buffer.writeInt(packet.module);
     }
 
-    static read(buffer: any): Error | null {
+    static read(buffer: IByteBuffer): Error | null {
         const length = buffer.readInt();
         if (length === 0) {
             return null;

@@ -1,3 +1,4 @@
+import IByteBuffer from '../IByteBuffer';
 
 
 class PairLS {
@@ -11,7 +12,7 @@ class PairLS {
         return PairLS.PROTOCOL_ID;
     }
 
-    static write(buffer: any, packet: PairLS | null) {
+    static write(buffer: IByteBuffer, packet: PairLS | null) {
         if (packet === null) {
             buffer.writeInt(0);
             return;
@@ -21,7 +22,7 @@ class PairLS {
         buffer.writeString(packet.value);
     }
 
-    static read(buffer: any): PairLS | null {
+    static read(buffer: IByteBuffer): PairLS | null {
         const length = buffer.readInt();
         if (length === 0) {
             return null;

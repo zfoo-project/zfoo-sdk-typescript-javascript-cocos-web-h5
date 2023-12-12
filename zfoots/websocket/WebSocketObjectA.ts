@@ -1,3 +1,4 @@
+import IByteBuffer from '../IByteBuffer';
 import WebSocketObjectB from './WebSocketObjectB';
 
 
@@ -12,7 +13,7 @@ class WebSocketObjectA {
         return WebSocketObjectA.PROTOCOL_ID;
     }
 
-    static write(buffer: any, packet: WebSocketObjectA | null) {
+    static write(buffer: IByteBuffer, packet: WebSocketObjectA | null) {
         if (packet === null) {
             buffer.writeInt(0);
             return;
@@ -22,7 +23,7 @@ class WebSocketObjectA {
         buffer.writePacket(packet.objectB, 2072);
     }
 
-    static read(buffer: any): WebSocketObjectA | null {
+    static read(buffer: IByteBuffer): WebSocketObjectA | null {
         const length = buffer.readInt();
         if (length === 0) {
             return null;

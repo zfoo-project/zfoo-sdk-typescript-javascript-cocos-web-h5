@@ -1,3 +1,4 @@
+import IByteBuffer from '../IByteBuffer';
 import WebSocketObjectA from './WebSocketObjectA';
 
 
@@ -50,7 +51,7 @@ class WebSocketPacketRequest {
         return WebSocketPacketRequest.PROTOCOL_ID;
     }
 
-    static write(buffer: any, packet: WebSocketPacketRequest | null) {
+    static write(buffer: IByteBuffer, packet: WebSocketPacketRequest | null) {
         if (packet === null) {
             buffer.writeInt(0);
             return;
@@ -191,7 +192,7 @@ class WebSocketPacketRequest {
         }
     }
 
-    static read(buffer: any): WebSocketPacketRequest | null {
+    static read(buffer: IByteBuffer): WebSocketPacketRequest | null {
         const length = buffer.readInt();
         if (length === 0) {
             return null;

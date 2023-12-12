@@ -1,3 +1,4 @@
+import IByteBuffer from '../IByteBuffer';
 
 
 class Pong {
@@ -10,7 +11,7 @@ class Pong {
         return Pong.PROTOCOL_ID;
     }
 
-    static write(buffer: any, packet: Pong | null) {
+    static write(buffer: IByteBuffer, packet: Pong | null) {
         if (packet === null) {
             buffer.writeInt(0);
             return;
@@ -19,7 +20,7 @@ class Pong {
         buffer.writeLong(packet.time);
     }
 
-    static read(buffer: any): Pong | null {
+    static read(buffer: IByteBuffer): Pong | null {
         const length = buffer.readInt();
         if (length === 0) {
             return null;

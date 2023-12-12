@@ -1,3 +1,4 @@
+import IByteBuffer from '../IByteBuffer';
 
 
 class HttpHelloResponse {
@@ -10,7 +11,7 @@ class HttpHelloResponse {
         return HttpHelloResponse.PROTOCOL_ID;
     }
 
-    static write(buffer: any, packet: HttpHelloResponse | null) {
+    static write(buffer: IByteBuffer, packet: HttpHelloResponse | null) {
         if (packet === null) {
             buffer.writeInt(0);
             return;
@@ -19,7 +20,7 @@ class HttpHelloResponse {
         buffer.writeString(packet.message);
     }
 
-    static read(buffer: any): HttpHelloResponse | null {
+    static read(buffer: IByteBuffer): HttpHelloResponse | null {
         const length = buffer.readInt();
         if (length === 0) {
             return null;

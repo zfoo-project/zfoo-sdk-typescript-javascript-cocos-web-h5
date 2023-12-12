@@ -1,3 +1,4 @@
+import IByteBuffer from '../IByteBuffer';
 
 
 class Message {
@@ -12,7 +13,7 @@ class Message {
         return Message.PROTOCOL_ID;
     }
 
-    static write(buffer: any, packet: Message | null) {
+    static write(buffer: IByteBuffer, packet: Message | null) {
         if (packet === null) {
             buffer.writeInt(0);
             return;
@@ -23,7 +24,7 @@ class Message {
         buffer.writeByte(packet.module);
     }
 
-    static read(buffer: any): Message | null {
+    static read(buffer: IByteBuffer): Message | null {
         const length = buffer.readInt();
         if (length === 0) {
             return null;

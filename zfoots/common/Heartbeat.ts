@@ -1,3 +1,4 @@
+import IByteBuffer from '../IByteBuffer';
 
 
 class Heartbeat {
@@ -10,7 +11,7 @@ class Heartbeat {
         return Heartbeat.PROTOCOL_ID;
     }
 
-    static write(buffer: any, packet: Heartbeat | null) {
+    static write(buffer: IByteBuffer, packet: Heartbeat | null) {
         if (packet === null) {
             buffer.writeInt(0);
             return;
@@ -18,7 +19,7 @@ class Heartbeat {
         buffer.writeInt(-1);
     }
 
-    static read(buffer: any): Heartbeat | null {
+    static read(buffer: IByteBuffer): Heartbeat | null {
         const length = buffer.readInt();
         if (length === 0) {
             return null;

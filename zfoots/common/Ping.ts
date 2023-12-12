@@ -1,3 +1,4 @@
+import IByteBuffer from '../IByteBuffer';
 
 
 class Ping {
@@ -10,7 +11,7 @@ class Ping {
         return Ping.PROTOCOL_ID;
     }
 
-    static write(buffer: any, packet: Ping | null) {
+    static write(buffer: IByteBuffer, packet: Ping | null) {
         if (packet === null) {
             buffer.writeInt(0);
             return;
@@ -18,7 +19,7 @@ class Ping {
         buffer.writeInt(-1);
     }
 
-    static read(buffer: any): Ping | null {
+    static read(buffer: IByteBuffer): Ping | null {
         const length = buffer.readInt();
         if (length === 0) {
             return null;

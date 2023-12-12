@@ -1,3 +1,4 @@
+import IByteBuffer from '../IByteBuffer';
 
 
 class TripleLSS {
@@ -12,7 +13,7 @@ class TripleLSS {
         return TripleLSS.PROTOCOL_ID;
     }
 
-    static write(buffer: any, packet: TripleLSS | null) {
+    static write(buffer: IByteBuffer, packet: TripleLSS | null) {
         if (packet === null) {
             buffer.writeInt(0);
             return;
@@ -23,7 +24,7 @@ class TripleLSS {
         buffer.writeString(packet.right);
     }
 
-    static read(buffer: any): TripleLSS | null {
+    static read(buffer: IByteBuffer): TripleLSS | null {
         const length = buffer.readInt();
         if (length === 0) {
             return null;

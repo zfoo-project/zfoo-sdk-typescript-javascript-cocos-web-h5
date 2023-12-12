@@ -1,3 +1,4 @@
+import IByteBuffer from '../IByteBuffer';
 
 
 class WebsocketHelloResponse {
@@ -10,7 +11,7 @@ class WebsocketHelloResponse {
         return WebsocketHelloResponse.PROTOCOL_ID;
     }
 
-    static write(buffer: any, packet: WebsocketHelloResponse | null) {
+    static write(buffer: IByteBuffer, packet: WebsocketHelloResponse | null) {
         if (packet === null) {
             buffer.writeInt(0);
             return;
@@ -19,7 +20,7 @@ class WebsocketHelloResponse {
         buffer.writeString(packet.message);
     }
 
-    static read(buffer: any): WebsocketHelloResponse | null {
+    static read(buffer: IByteBuffer): WebsocketHelloResponse | null {
         const length = buffer.readInt();
         if (length === 0) {
             return null;

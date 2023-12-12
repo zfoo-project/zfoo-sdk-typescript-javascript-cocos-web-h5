@@ -1,3 +1,4 @@
+import IByteBuffer from '../IByteBuffer';
 
 
 class TripleString {
@@ -12,7 +13,7 @@ class TripleString {
         return TripleString.PROTOCOL_ID;
     }
 
-    static write(buffer: any, packet: TripleString | null) {
+    static write(buffer: IByteBuffer, packet: TripleString | null) {
         if (packet === null) {
             buffer.writeInt(0);
             return;
@@ -23,7 +24,7 @@ class TripleString {
         buffer.writeString(packet.right);
     }
 
-    static read(buffer: any): TripleString | null {
+    static read(buffer: IByteBuffer): TripleString | null {
         const length = buffer.readInt();
         if (length === 0) {
             return null;

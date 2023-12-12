@@ -1,3 +1,4 @@
+import IByteBuffer from '../IByteBuffer';
 
 
 class UdpHelloRequest {
@@ -10,7 +11,7 @@ class UdpHelloRequest {
         return UdpHelloRequest.PROTOCOL_ID;
     }
 
-    static write(buffer: any, packet: UdpHelloRequest | null) {
+    static write(buffer: IByteBuffer, packet: UdpHelloRequest | null) {
         if (packet === null) {
             buffer.writeInt(0);
             return;
@@ -19,7 +20,7 @@ class UdpHelloRequest {
         buffer.writeString(packet.message);
     }
 
-    static read(buffer: any): UdpHelloRequest | null {
+    static read(buffer: IByteBuffer): UdpHelloRequest | null {
         const length = buffer.readInt();
         if (length === 0) {
             return null;

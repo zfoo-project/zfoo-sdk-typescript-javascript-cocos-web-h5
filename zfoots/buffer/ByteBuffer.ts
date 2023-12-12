@@ -1,4 +1,4 @@
-import IByteBuffer from "./IByteBuffer";
+import IByteBuffer from "../IByteBuffer";
 import ProtocolManager from "../ProtocolManager";
 
 import {writeInt64, readInt64} from "./Longbits";

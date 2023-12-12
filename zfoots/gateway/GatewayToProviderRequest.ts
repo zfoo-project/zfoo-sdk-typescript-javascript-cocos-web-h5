@@ -1,3 +1,4 @@
+import IByteBuffer from '../IByteBuffer';
 
 
 class GatewayToProviderRequest {
@@ -10,7 +11,7 @@ class GatewayToProviderRequest {
         return GatewayToProviderRequest.PROTOCOL_ID;
     }
 
-    static write(buffer: any, packet: GatewayToProviderRequest | null) {
+    static write(buffer: IByteBuffer, packet: GatewayToProviderRequest | null) {
         if (packet === null) {
             buffer.writeInt(0);
             return;
@@ -19,7 +20,7 @@ class GatewayToProviderRequest {
         buffer.writeString(packet.message);
     }
 
-    static read(buffer: any): GatewayToProviderRequest | null {
+    static read(buffer: IByteBuffer): GatewayToProviderRequest | null {
         const length = buffer.readInt();
         if (length === 0) {
             return null;

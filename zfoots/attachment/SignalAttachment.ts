@@ -1,3 +1,4 @@
+import IByteBuffer from '../IByteBuffer';
 
 
 class SignalAttachment {
@@ -14,7 +15,7 @@ class SignalAttachment {
         return SignalAttachment.PROTOCOL_ID;
     }
 
-    static write(buffer: any, packet: SignalAttachment | null) {
+    static write(buffer: IByteBuffer, packet: SignalAttachment | null) {
         if (packet === null) {
             buffer.writeInt(0);
             return;
@@ -26,7 +27,7 @@ class SignalAttachment {
         buffer.writeLong(packet.timestamp);
     }
 
-    static read(buffer: any): SignalAttachment | null {
+    static read(buffer: IByteBuffer): SignalAttachment | null {
         const length = buffer.readInt();
         if (length === 0) {
             return null;
