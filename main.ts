@@ -3,6 +3,7 @@ import WebsocketHelloResponse from './zfoots/websocket/WebsocketHelloResponse';
 import {connect, send, asyncAsk, receiver, isWebsocketReady} from './websocket';
 
 // 如果是在idea中运行，需要先安装插件：Run Configuration for TypeScript
+// 安装完插件过后，在 main.ts 右键 Run main.ts 直接运行
 console.log("Hello world");
 
 // nodejs的测试环境需要修改ByteBuffer使用nodejs的util.TextEncoder

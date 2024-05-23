@@ -12,7 +12,7 @@ support TypeScript in Cocos
 
 # Start Server
 
-- start websocket server in [WebsocketServerTest](https://github.com/zfoo-project/zfoo/blob/622f822576b37ffa526bf7a4e92ecc017b4199f4/net/src/test/java/com/zfoo/net/core/websocket/server/WebsocketServerTest.java)
+- start websocket server in [WebsocketServerTest](https://github.com/zfoo-project/zfoo/blob/main/net/src/test/java/com/zfoo/net/core/websocket/server/WebsocketServerTest.java)
 
 # Start Client
 
