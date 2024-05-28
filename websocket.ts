@@ -137,7 +137,7 @@ class EncodedPacketInfo {
   attachment: SignalAttachment | null = null;
 }
 
-export async function asyncAsk(packet: any): Promise<any> {
+export async function asyncRequest(packet: any): Promise<any> {
   const currentTime = new Date().getTime();
   const attachment: SignalAttachment = new SignalAttachment();
   uuid++;

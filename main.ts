@@ -1,6 +1,6 @@
 import WebsocketHelloRequest from './zfoots/websocket/WebsocketHelloRequest';
 import WebsocketHelloResponse from './zfoots/websocket/WebsocketHelloResponse';
-import {connect, send, asyncAsk, receiver, isWebsocketReady} from './websocket';
+import {connect, send, asyncRequest, receiver, isWebsocketReady} from './websocket';
 
 // 如果是在idea中运行，需要先安装插件：Run Configuration for TypeScript
 // 安装完插件过后，在 main.ts 右键 Run main.ts 直接运行
@@ -29,7 +29,7 @@ async function test() {
     // 使用await语法发送一个消息
     const myRequest = new WebsocketHelloRequest();
     myRequest.message = "这个是使用await语法发送的消息";
-    const response: WebsocketHelloResponse = await asyncAsk(myRequest);
+    const response: WebsocketHelloResponse = await asyncRequest(myRequest);
     console.log("receive await message -> " + JSON.stringify(response));
 }
 
