@@ -1,17 +1,17 @@
 import IByteBuffer from '../IByteBuffer';
+import IProtocolRegistration from '../IProtocolRegistration';
 
 
 class GatewayToProviderRequest {
-
     message: string = '';
+}
 
-    static PROTOCOL_ID: number = 5000;
-
+export class GatewayToProviderRequestRegistration implements IProtocolRegistration<GatewayToProviderRequest> {
     protocolId(): number {
-        return GatewayToProviderRequest.PROTOCOL_ID;
+        return 5000;
     }
 
-    static write(buffer: IByteBuffer, packet: GatewayToProviderRequest | null) {
+    write(buffer: IByteBuffer, packet: GatewayToProviderRequest | null) {
         if (packet === null) {
             buffer.writeInt(0);
             return;
@@ -20,7 +20,7 @@ class GatewayToProviderRequest {
         buffer.writeString(packet.message);
     }
 
-    static read(buffer: IByteBuffer): GatewayToProviderRequest | null {
+    read(buffer: IByteBuffer): GatewayToProviderRequest | null {
         const length = buffer.readInt();
         if (length === 0) {
             return null;

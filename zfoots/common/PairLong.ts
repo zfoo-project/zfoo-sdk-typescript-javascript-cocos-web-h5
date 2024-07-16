@@ -1,18 +1,18 @@
 import IByteBuffer from '../IByteBuffer';
+import IProtocolRegistration from '../IProtocolRegistration';
 
 
 class PairLong {
-
     key: number = 0;
     value: number = 0;
+}
 
-    static PROTOCOL_ID: number = 111;
-
+export class PairLongRegistration implements IProtocolRegistration<PairLong> {
     protocolId(): number {
-        return PairLong.PROTOCOL_ID;
+        return 111;
     }
 
-    static write(buffer: IByteBuffer, packet: PairLong | null) {
+    write(buffer: IByteBuffer, packet: PairLong | null) {
         if (packet === null) {
             buffer.writeInt(0);
             return;
@@ -22,7 +22,7 @@ class PairLong {
         buffer.writeLong(packet.value);
     }
 
-    static read(buffer: IByteBuffer): PairLong | null {
+    read(buffer: IByteBuffer): PairLong | null {
         const length = buffer.readInt();
         if (length === 0) {
             return null;

@@ -1,17 +1,17 @@
 import IByteBuffer from '../IByteBuffer';
+import IProtocolRegistration from '../IProtocolRegistration';
 
 
 class UdpHelloResponse {
-
     message: string = '';
+}
 
-    static PROTOCOL_ID: number = 1201;
-
+export class UdpHelloResponseRegistration implements IProtocolRegistration<UdpHelloResponse> {
     protocolId(): number {
-        return UdpHelloResponse.PROTOCOL_ID;
+        return 1201;
     }
 
-    static write(buffer: IByteBuffer, packet: UdpHelloResponse | null) {
+    write(buffer: IByteBuffer, packet: UdpHelloResponse | null) {
         if (packet === null) {
             buffer.writeInt(0);
             return;
@@ -20,7 +20,7 @@ class UdpHelloResponse {
         buffer.writeString(packet.message);
     }
 
-    static read(buffer: IByteBuffer): UdpHelloResponse | null {
+    read(buffer: IByteBuffer): UdpHelloResponse | null {
         const length = buffer.readInt();
         if (length === 0) {
             return null;

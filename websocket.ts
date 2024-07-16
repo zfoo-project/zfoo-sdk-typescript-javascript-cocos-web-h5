@@ -60,7 +60,7 @@ export function connect(wsUrl: string): WebSocket {
     const packet = ProtocolManager.read(buffer);
 
     let attachment: any = null;
-    if (buffer.isReadable() && buffer.readBoolean()) {
+    if (buffer.isReadable() && buffer.readBool()) {
       console.log(new Date(), "Websocket收到异步response <-- ", packet);
       attachment = ProtocolManager.read(buffer);
       const signalId = attachment.signalId
@@ -107,9 +107,9 @@ export function send(packet: any, attachment: any = null) {
       buffer.setWriteOffset(4);
       ProtocolManager.write(buffer, packet);
       if (attachment == null) {
-        buffer.writeBoolean(false);
+        buffer.writeBool(false);
       } else {
-        buffer.writeBoolean(true);
+        buffer.writeBool(true);
         ProtocolManager.write(buffer, attachment)
       }
       const writeOffset = buffer.writeOffset;
@@ -182,7 +182,8 @@ export function receiver(protocolId: number, fun: any) {
 }
 
 function route(packet: any) {
-  const receiver = receiverMap.get(packet.protocolId());
+  const protocolId = ProtocolManager.getProtocolId(packet.constructor)
+  const receiver = receiverMap.get(protocolId);
   if (receiver == null) {
     console.log("router not exist ", packet);
     return;

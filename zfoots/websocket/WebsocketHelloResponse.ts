@@ -1,17 +1,17 @@
 import IByteBuffer from '../IByteBuffer';
+import IProtocolRegistration from '../IProtocolRegistration';
 
 
 class WebsocketHelloResponse {
-
     message: string = '';
+}
 
-    static PROTOCOL_ID: number = 1401;
-
+export class WebsocketHelloResponseRegistration implements IProtocolRegistration<WebsocketHelloResponse> {
     protocolId(): number {
-        return WebsocketHelloResponse.PROTOCOL_ID;
+        return 1401;
     }
 
-    static write(buffer: IByteBuffer, packet: WebsocketHelloResponse | null) {
+    write(buffer: IByteBuffer, packet: WebsocketHelloResponse | null) {
         if (packet === null) {
             buffer.writeInt(0);
             return;
@@ -20,7 +20,7 @@ class WebsocketHelloResponse {
         buffer.writeString(packet.message);
     }
 
-    static read(buffer: IByteBuffer): WebsocketHelloResponse | null {
+    read(buffer: IByteBuffer): WebsocketHelloResponse | null {
         const length = buffer.readInt();
         if (length === 0) {
             return null;

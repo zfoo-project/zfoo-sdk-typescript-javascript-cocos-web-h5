@@ -1,19 +1,19 @@
 import IByteBuffer from '../IByteBuffer';
+import IProtocolRegistration from '../IProtocolRegistration';
 
 
 class TripleLSS {
-
     left: number = 0;
     middle: string = '';
     right: string = '';
+}
 
-    static PROTOCOL_ID: number = 116;
-
+export class TripleLSSRegistration implements IProtocolRegistration<TripleLSS> {
     protocolId(): number {
-        return TripleLSS.PROTOCOL_ID;
+        return 116;
     }
 
-    static write(buffer: IByteBuffer, packet: TripleLSS | null) {
+    write(buffer: IByteBuffer, packet: TripleLSS | null) {
         if (packet === null) {
             buffer.writeInt(0);
             return;
@@ -24,7 +24,7 @@ class TripleLSS {
         buffer.writeString(packet.right);
     }
 
-    static read(buffer: IByteBuffer): TripleLSS | null {
+    read(buffer: IByteBuffer): TripleLSS | null {
         const length = buffer.readInt();
         if (length === 0) {
             return null;

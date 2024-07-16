@@ -1,17 +1,17 @@
 import IByteBuffer from '../IByteBuffer';
+import IProtocolRegistration from '../IProtocolRegistration';
 
 
 class TcpHelloResponse {
-
     message: string = '';
+}
 
-    static PROTOCOL_ID: number = 1301;
-
+export class TcpHelloResponseRegistration implements IProtocolRegistration<TcpHelloResponse> {
     protocolId(): number {
-        return TcpHelloResponse.PROTOCOL_ID;
+        return 1301;
     }
 
-    static write(buffer: IByteBuffer, packet: TcpHelloResponse | null) {
+    write(buffer: IByteBuffer, packet: TcpHelloResponse | null) {
         if (packet === null) {
             buffer.writeInt(0);
             return;
@@ -20,7 +20,7 @@ class TcpHelloResponse {
         buffer.writeString(packet.message);
     }
 
-    static read(buffer: IByteBuffer): TcpHelloResponse | null {
+    read(buffer: IByteBuffer): TcpHelloResponse | null {
         const length = buffer.readInt();
         if (length === 0) {
             return null;

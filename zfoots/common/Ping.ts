@@ -1,17 +1,17 @@
 import IByteBuffer from '../IByteBuffer';
+import IProtocolRegistration from '../IProtocolRegistration';
 
 
 class Ping {
-
     
+}
 
-    static PROTOCOL_ID: number = 103;
-
+export class PingRegistration implements IProtocolRegistration<Ping> {
     protocolId(): number {
-        return Ping.PROTOCOL_ID;
+        return 103;
     }
 
-    static write(buffer: IByteBuffer, packet: Ping | null) {
+    write(buffer: IByteBuffer, packet: Ping | null) {
         if (packet === null) {
             buffer.writeInt(0);
             return;
@@ -19,7 +19,7 @@ class Ping {
         buffer.writeInt(-1);
     }
 
-    static read(buffer: IByteBuffer): Ping | null {
+    read(buffer: IByteBuffer): Ping | null {
         const length = buffer.readInt();
         if (length === 0) {
             return null;

@@ -14,13 +14,17 @@ const maxInt = 2147483647;
 const minInt = -2147483648;
 
 // UTF-8编码与解码
-// const encoder = new TextEncoder();
-// const decoder = new TextDecoder();
+const encoder = new TextEncoder();
+const decoder = new TextDecoder();
 
 // nodejs的测试环境需要用以下方式特殊处理
-const util = require('util');
-const encoder = new util.TextEncoder('utf-8');
-const decoder = new util.TextDecoder('utf-8');
+// const util = require('util');
+// const encoder = new util.TextEncoder('utf-8');
+// const decoder = new util.TextDecoder('utf-8');
+
+// 现在所有主流浏览器都支持TextDecoder，只有微信小程序不支持TextDecoder（微信浏览器也支持，微信的小程序和浏览器不是同一个js环境）
+// https://developers.weixin.qq.com/community/develop/doc/000ca85023ce78c8484e0d1d256400
+// 如果在微信小程序中使用，需要按照上面的链接全局引入TextEncoder相关依赖
 
 // 在js中long可以支持的最大值
 // const maxLong = 9007199254740992;
@@ -80,26 +84,30 @@ class ByteBuffer implements IByteBuffer{
         return length !== -1 && this.getReadOffset() < length + beforeReadIndex;
     }
 
-    setWriteOffset(writeOffset: number): void {
-        if (writeOffset > this.buffer.byteLength) {
-            throw new Error('index out of bounds exception:readerIndex:' + this.readOffset +
-                ', writerIndex:' + this.writeOffset +
-                '(expected:0 <= readerIndex <= writerIndex <= capacity:' + this.buffer.byteLength);
+    getBuffer(): ArrayBuffer {
+        return this.buffer;
+    }
+
+    setWriteOffset(writeIndex: number): void {
+        if (writeIndex > this.buffer.byteLength) {
+            throw new Error('writeIndex out of bounds exception:readOffset:' + this.readOffset +
+                ', writeOffset:' + this.writeOffset +
+                '(expected:0 <= readOffset <= writeOffset <= capacity:' + this.buffer.byteLength + ')');
         }
-        this.writeOffset = writeOffset;
+        this.writeOffset = writeIndex;
     }
 
     getWriteOffset(): number {
         return this.writeOffset;
     }
 
-    setReadOffset(readOffset: number): void {
-        if (readOffset > this.writeOffset) {
-            throw new Error('index out of bounds exception:readerIndex:' + this.readOffset +
-                ', writerIndex:' + this.writeOffset +
-                '(expected:0 <= readerIndex <= writerIndex <= capacity:' + this.buffer.byteLength);
+    setReadOffset(readIndex: number): void {
+        if (readIndex > this.writeOffset) {
+            throw new Error('readIndex out of bounds exception:readIndex:' + this.readOffset +
+                ', writeOffset:' + this.writeOffset +
+                '(expected:0 <= readOffset <= writeOffset <= capacity:' + this.buffer.byteLength + ')');
         }
-        this.readOffset = readOffset;
+        this.readOffset = readIndex;
     }
 
     getReadOffset(): number {
@@ -138,7 +146,7 @@ class ByteBuffer implements IByteBuffer{
         return result;
     }
 
-    writeBoolean(value: boolean): void {
+    writeBool(value: boolean): void {
         if (!(value === true || value === false)) {
             throw new Error('value must be true of false');
         }
@@ -151,7 +159,7 @@ class ByteBuffer implements IByteBuffer{
         this.writeOffset++;
     }
 
-    readBoolean(): boolean {
+    readBool(): boolean {
         const value = this.bufferView.getInt8(this.readOffset);
         this.readOffset++;
         return (value === 1);
@@ -399,23 +407,23 @@ class ByteBuffer implements IByteBuffer{
         return protocolRegistration.read(this);
     }
 
-    writeBooleanArray(array: Array<boolean> | null) {
+    writeBoolArray(array: Array<boolean> | null) {
         if (array === null) {
             this.writeInt(0);
         } else {
             this.writeInt(array.length);
             array.forEach(element => {
-                this.writeBoolean(element);
+                this.writeBool(element);
             });
         }
     }
 
-    readBooleanArray(): Array<boolean> {
+    readBoolArray(): Array<boolean> {
         const array: boolean[] = [];
         const length = this.readInt();
         if (length > 0) {
             for (let index = 0; index < length; index++) {
-                array.push(this.readBoolean());
+                array.push(this.readBool());
             }
         }
         return array;
@@ -600,12 +608,12 @@ class ByteBuffer implements IByteBuffer{
     }
 
     // ---------------------------------------------list-------------------------------------------
-    writeBooleanList(list: Array<boolean> | null): void {
-        this.writeBooleanArray(list);
+    writeBoolList(list: Array<boolean> | null): void {
+        this.writeBoolArray(list);
     }
 
-    readBooleanList(): boolean[] {
-        return this.readBooleanArray();
+    readBoolList(): boolean[] {
+        return this.readBoolArray();
     }
 
     writeByteList(list: Array<number> | null): void {
@@ -673,19 +681,19 @@ class ByteBuffer implements IByteBuffer{
     }
 
     // ---------------------------------------------set-------------------------------------------
-    writeBooleanSet(set: Set<boolean> | null): void {
+    writeBoolSet(set: Set<boolean> | null): void {
         if (set === null) {
             this.writeInt(0);
         } else {
             this.writeInt(set.size);
             set.forEach(element => {
-                this.writeBoolean(element);
+                this.writeBool(element);
             });
         }
     }
 
-    readBooleanSet(): Set<boolean> {
-        return new Set(this.readBooleanArray());
+    readBoolSet(): Set<boolean> {
+        return new Set(this.readBoolArray());
     }
 
     writeByteSet(set: Set<number> | null): void {

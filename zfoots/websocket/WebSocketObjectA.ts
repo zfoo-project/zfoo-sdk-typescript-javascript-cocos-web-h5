@@ -1,19 +1,19 @@
 import IByteBuffer from '../IByteBuffer';
+import IProtocolRegistration from '../IProtocolRegistration';
 import WebSocketObjectB from './WebSocketObjectB';
 
 
 class WebSocketObjectA {
-
     a: number = 0;
     objectB: WebSocketObjectB | null = null;
+}
 
-    static PROTOCOL_ID: number = 2071;
-
+export class WebSocketObjectARegistration implements IProtocolRegistration<WebSocketObjectA> {
     protocolId(): number {
-        return WebSocketObjectA.PROTOCOL_ID;
+        return 2071;
     }
 
-    static write(buffer: IByteBuffer, packet: WebSocketObjectA | null) {
+    write(buffer: IByteBuffer, packet: WebSocketObjectA | null) {
         if (packet === null) {
             buffer.writeInt(0);
             return;
@@ -23,7 +23,7 @@ class WebSocketObjectA {
         buffer.writePacket(packet.objectB, 2072);
     }
 
-    static read(buffer: IByteBuffer): WebSocketObjectA | null {
+    read(buffer: IByteBuffer): WebSocketObjectA | null {
         const length = buffer.readInt();
         if (length === 0) {
             return null;

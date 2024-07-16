@@ -1,17 +1,17 @@
 import IByteBuffer from '../IByteBuffer';
+import IProtocolRegistration from '../IProtocolRegistration';
 
 
 class JsonHelloResponse {
-
     message: string = '';
+}
 
-    static PROTOCOL_ID: number = 1601;
-
+export class JsonHelloResponseRegistration implements IProtocolRegistration<JsonHelloResponse> {
     protocolId(): number {
-        return JsonHelloResponse.PROTOCOL_ID;
+        return 1601;
     }
 
-    static write(buffer: IByteBuffer, packet: JsonHelloResponse | null) {
+    write(buffer: IByteBuffer, packet: JsonHelloResponse | null) {
         if (packet === null) {
             buffer.writeInt(0);
             return;
@@ -20,7 +20,7 @@ class JsonHelloResponse {
         buffer.writeString(packet.message);
     }
 
-    static read(buffer: IByteBuffer): JsonHelloResponse | null {
+    read(buffer: IByteBuffer): JsonHelloResponse | null {
         const length = buffer.readInt();
         if (length === 0) {
             return null;

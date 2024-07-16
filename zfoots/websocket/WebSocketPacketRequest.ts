@@ -1,9 +1,9 @@
 import IByteBuffer from '../IByteBuffer';
+import IProtocolRegistration from '../IProtocolRegistration';
 import WebSocketObjectA from './WebSocketObjectA';
 
 
 class WebSocketPacketRequest {
-
     a: number = 0;
     aa: number = 0;
     aaa: Array<number> = [];
@@ -44,14 +44,14 @@ class WebSocketPacketRequest {
     sss: Set<Set<WebSocketObjectA>> = new Set();
     ssss: Set<string> = new Set();
     sssss: Set<Map<number, string>> = new Set();
+}
 
-    static PROTOCOL_ID: number = 2070;
-
+export class WebSocketPacketRequestRegistration implements IProtocolRegistration<WebSocketPacketRequest> {
     protocolId(): number {
-        return WebSocketPacketRequest.PROTOCOL_ID;
+        return 2070;
     }
 
-    static write(buffer: IByteBuffer, packet: WebSocketPacketRequest | null) {
+    write(buffer: IByteBuffer, packet: WebSocketPacketRequest | null) {
         if (packet === null) {
             buffer.writeInt(0);
             return;
@@ -192,186 +192,186 @@ class WebSocketPacketRequest {
         }
     }
 
-    static read(buffer: IByteBuffer): WebSocketPacketRequest | null {
+    read(buffer: IByteBuffer): WebSocketPacketRequest | null {
         const length = buffer.readInt();
         if (length === 0) {
             return null;
         }
         const beforeReadIndex = buffer.getReadOffset();
         const packet = new WebSocketPacketRequest();
-        const result15 = buffer.readByte();
-        packet.a = result15;
-        const result16 = buffer.readByte();
-        packet.aa = result16;
-        const array17 = buffer.readByteArray();
-        packet.aaa = array17;
-        const array18 = buffer.readByteArray();
-        packet.aaaa = array18;
-        const result19 = buffer.readShort();
-        packet.b = result19;
-        const result20 = buffer.readShort();
-        packet.bb = result20;
-        const array21 = buffer.readShortArray();
-        packet.bbb = array21;
-        const array22 = buffer.readShortArray();
-        packet.bbbb = array22;
-        const result23 = buffer.readInt();
-        packet.c = result23;
-        const result24 = buffer.readInt();
-        packet.cc = result24;
-        const array25 = buffer.readIntArray();
-        packet.ccc = array25;
-        const array26 = buffer.readIntArray();
-        packet.cccc = array26;
-        const result27 = buffer.readLong();
-        packet.d = result27;
-        const array28 = buffer.readLongArray();
-        packet.dd = array28;
-        const result29 = buffer.readFloat();
-        packet.e = result29;
-        const result30 = buffer.readFloat();
-        packet.ee = result30;
-        const array31 = buffer.readFloatArray();
-        packet.eee = array31;
-        const array32 = buffer.readFloatArray();
-        packet.eeee = array32;
-        const result33 = buffer.readDouble();
-        packet.f = result33;
-        const result34 = buffer.readDouble();
-        packet.ff = result34;
-        const array35 = buffer.readDoubleArray();
-        packet.fff = array35;
-        const array36 = buffer.readDoubleArray();
-        packet.ffff = array36;
-        const result37 = buffer.readString();
-        packet.jj = result37;
-        const array38 = buffer.readStringArray();
-        packet.jjj = array38;
-        const result39 = buffer.readPacket(2071);
-        packet.kk = result39;
-        const array40 = buffer.readPacketArray(2071);
-        packet.kkk = array40;
-        const list41 = buffer.readIntList();
-        packet.l = list41;
-        const result42 = new Array<Array<Array<number>>>();
-        const size43 = buffer.readInt();
-        if (size43 > 0) {
-            for (let index44 = 0; index44 < size43; index44++) {
-                const result45 = new Array<Array<number>>();
-                const size46 = buffer.readInt();
-                if (size46 > 0) {
-                    for (let index47 = 0; index47 < size46; index47++) {
-                        const list48 = buffer.readIntList();
-                        result45.push(list48);
+        const result0 = buffer.readByte();
+        packet.a = result0;
+        const result1 = buffer.readByte();
+        packet.aa = result1;
+        const array2 = buffer.readByteArray();
+        packet.aaa = array2;
+        const array3 = buffer.readByteArray();
+        packet.aaaa = array3;
+        const result4 = buffer.readShort();
+        packet.b = result4;
+        const result5 = buffer.readShort();
+        packet.bb = result5;
+        const array6 = buffer.readShortArray();
+        packet.bbb = array6;
+        const array7 = buffer.readShortArray();
+        packet.bbbb = array7;
+        const result8 = buffer.readInt();
+        packet.c = result8;
+        const result9 = buffer.readInt();
+        packet.cc = result9;
+        const array10 = buffer.readIntArray();
+        packet.ccc = array10;
+        const array11 = buffer.readIntArray();
+        packet.cccc = array11;
+        const result12 = buffer.readLong();
+        packet.d = result12;
+        const array13 = buffer.readLongArray();
+        packet.dd = array13;
+        const result14 = buffer.readFloat();
+        packet.e = result14;
+        const result15 = buffer.readFloat();
+        packet.ee = result15;
+        const array16 = buffer.readFloatArray();
+        packet.eee = array16;
+        const array17 = buffer.readFloatArray();
+        packet.eeee = array17;
+        const result18 = buffer.readDouble();
+        packet.f = result18;
+        const result19 = buffer.readDouble();
+        packet.ff = result19;
+        const array20 = buffer.readDoubleArray();
+        packet.fff = array20;
+        const array21 = buffer.readDoubleArray();
+        packet.ffff = array21;
+        const result22 = buffer.readString();
+        packet.jj = result22;
+        const array23 = buffer.readStringArray();
+        packet.jjj = array23;
+        const result24 = buffer.readPacket(2071);
+        packet.kk = result24;
+        const array25 = buffer.readPacketArray(2071);
+        packet.kkk = array25;
+        const list26 = buffer.readIntList();
+        packet.l = list26;
+        const result27 = new Array<Array<Array<number>>>();
+        const size28 = buffer.readInt();
+        if (size28 > 0) {
+            for (let index29 = 0; index29 < size28; index29++) {
+                const result30 = new Array<Array<number>>();
+                const size31 = buffer.readInt();
+                if (size31 > 0) {
+                    for (let index32 = 0; index32 < size31; index32++) {
+                        const list33 = buffer.readIntList();
+                        result30.push(list33);
                     }
                 }
-                result42.push(result45);
+                result27.push(result30);
             }
         }
-        packet.ll = result42;
-        const result49 = new Array<Array<WebSocketObjectA>>();
-        const size50 = buffer.readInt();
-        if (size50 > 0) {
-            for (let index51 = 0; index51 < size50; index51++) {
-                const list52 = buffer.readPacketList(2071);
-                result49.push(list52);
+        packet.ll = result27;
+        const result34 = new Array<Array<WebSocketObjectA>>();
+        const size35 = buffer.readInt();
+        if (size35 > 0) {
+            for (let index36 = 0; index36 < size35; index36++) {
+                const list37 = buffer.readPacketList(2071);
+                result34.push(list37);
             }
         }
-        packet.lll = result49;
-        const list53 = buffer.readStringList();
-        packet.llll = list53;
-        const result54 = new Array<Map<number, string>>();
-        const size55 = buffer.readInt();
-        if (size55 > 0) {
-            for (let index56 = 0; index56 < size55; index56++) {
-                const map57 = buffer.readIntStringMap();
-                result54.push(map57);
+        packet.lll = result34;
+        const list38 = buffer.readStringList();
+        packet.llll = list38;
+        const result39 = new Array<Map<number, string>>();
+        const size40 = buffer.readInt();
+        if (size40 > 0) {
+            for (let index41 = 0; index41 < size40; index41++) {
+                const map42 = buffer.readIntStringMap();
+                result39.push(map42);
             }
         }
-        packet.lllll = result54;
-        const map58 = buffer.readIntStringMap();
-        packet.m = map58;
-        const map59 = buffer.readIntPacketMap(2071);
-        packet.mm = map59;
-        const result60 = new Map<WebSocketObjectA, Array<number>>();
-        const size61 = buffer.readInt();
-        if (size61 > 0) {
-            for (let index62 = 0; index62 < size61; index62++) {
-                const result63 = buffer.readPacket(2071);
-                const list64 = buffer.readIntList();
-                result60.set(result63, list64);
+        packet.lllll = result39;
+        const map43 = buffer.readIntStringMap();
+        packet.m = map43;
+        const map44 = buffer.readIntPacketMap(2071);
+        packet.mm = map44;
+        const result45 = new Map<WebSocketObjectA, Array<number>>();
+        const size46 = buffer.readInt();
+        if (size46 > 0) {
+            for (let index47 = 0; index47 < size46; index47++) {
+                const result48 = buffer.readPacket(2071);
+                const list49 = buffer.readIntList();
+                result45.set(result48, list49);
             }
         }
-        packet.mmm = result60;
-        const result65 = new Map<Array<Array<WebSocketObjectA>>, Array<Array<Array<number>>>>();
+        packet.mmm = result45;
+        const result50 = new Map<Array<Array<WebSocketObjectA>>, Array<Array<Array<number>>>>();
+        const size51 = buffer.readInt();
+        if (size51 > 0) {
+            for (let index52 = 0; index52 < size51; index52++) {
+                const result53 = new Array<Array<WebSocketObjectA>>();
+                const size54 = buffer.readInt();
+                if (size54 > 0) {
+                    for (let index55 = 0; index55 < size54; index55++) {
+                        const list56 = buffer.readPacketList(2071);
+                        result53.push(list56);
+                    }
+                }
+                const result57 = new Array<Array<Array<number>>>();
+                const size58 = buffer.readInt();
+                if (size58 > 0) {
+                    for (let index59 = 0; index59 < size58; index59++) {
+                        const result60 = new Array<Array<number>>();
+                        const size61 = buffer.readInt();
+                        if (size61 > 0) {
+                            for (let index62 = 0; index62 < size61; index62++) {
+                                const list63 = buffer.readIntList();
+                                result60.push(list63);
+                            }
+                        }
+                        result57.push(result60);
+                    }
+                }
+                result50.set(result53, result57);
+            }
+        }
+        packet.mmmm = result50;
+        const set64 = buffer.readIntSet();
+        packet.s = set64;
+        const result65 = new Set<Set<Array<number>>>();
         const size66 = buffer.readInt();
         if (size66 > 0) {
             for (let index67 = 0; index67 < size66; index67++) {
-                const result68 = new Array<Array<WebSocketObjectA>>();
+                const result68 = new Set<Array<number>>();
                 const size69 = buffer.readInt();
                 if (size69 > 0) {
                     for (let index70 = 0; index70 < size69; index70++) {
-                        const list71 = buffer.readPacketList(2071);
-                        result68.push(list71);
+                        const list71 = buffer.readIntList();
+                        result68.add(list71);
                     }
                 }
-                const result72 = new Array<Array<Array<number>>>();
-                const size73 = buffer.readInt();
-                if (size73 > 0) {
-                    for (let index74 = 0; index74 < size73; index74++) {
-                        const result75 = new Array<Array<number>>();
-                        const size76 = buffer.readInt();
-                        if (size76 > 0) {
-                            for (let index77 = 0; index77 < size76; index77++) {
-                                const list78 = buffer.readIntList();
-                                result75.push(list78);
-                            }
-                        }
-                        result72.push(result75);
-                    }
-                }
-                result65.set(result68, result72);
+                result65.add(result68);
             }
         }
-        packet.mmmm = result65;
-        const set79 = buffer.readIntSet();
-        packet.s = set79;
-        const result80 = new Set<Set<Array<number>>>();
-        const size81 = buffer.readInt();
-        if (size81 > 0) {
-            for (let index82 = 0; index82 < size81; index82++) {
-                const result83 = new Set<Array<number>>();
-                const size84 = buffer.readInt();
-                if (size84 > 0) {
-                    for (let index85 = 0; index85 < size84; index85++) {
-                        const list86 = buffer.readIntList();
-                        result83.add(list86);
-                    }
-                }
-                result80.add(result83);
+        packet.ss = result65;
+        const result72 = new Set<Set<WebSocketObjectA>>();
+        const size73 = buffer.readInt();
+        if (size73 > 0) {
+            for (let index74 = 0; index74 < size73; index74++) {
+                const set75 = buffer.readPacketSet(2071);
+                result72.add(set75);
             }
         }
-        packet.ss = result80;
-        const result87 = new Set<Set<WebSocketObjectA>>();
-        const size88 = buffer.readInt();
-        if (size88 > 0) {
-            for (let index89 = 0; index89 < size88; index89++) {
-                const set90 = buffer.readPacketSet(2071);
-                result87.add(set90);
+        packet.sss = result72;
+        const set76 = buffer.readStringSet();
+        packet.ssss = set76;
+        const result77 = new Set<Map<number, string>>();
+        const size78 = buffer.readInt();
+        if (size78 > 0) {
+            for (let index79 = 0; index79 < size78; index79++) {
+                const map80 = buffer.readIntStringMap();
+                result77.add(map80);
             }
         }
-        packet.sss = result87;
-        const set91 = buffer.readStringSet();
-        packet.ssss = set91;
-        const result92 = new Set<Map<number, string>>();
-        const size93 = buffer.readInt();
-        if (size93 > 0) {
-            for (let index94 = 0; index94 < size93; index94++) {
-                const map95 = buffer.readIntStringMap();
-                result92.add(map95);
-            }
-        }
-        packet.sssss = result92;
+        packet.sssss = result77;
         if (length > 0) {
             buffer.setReadOffset(beforeReadIndex + length);
         }

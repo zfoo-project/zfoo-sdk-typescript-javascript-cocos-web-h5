@@ -1,19 +1,19 @@
 import IByteBuffer from '../IByteBuffer';
+import IProtocolRegistration from '../IProtocolRegistration';
 
 
 class TripleString {
-
     left: string = '';
     middle: string = '';
     right: string = '';
+}
 
-    static PROTOCOL_ID: number = 115;
-
+export class TripleStringRegistration implements IProtocolRegistration<TripleString> {
     protocolId(): number {
-        return TripleString.PROTOCOL_ID;
+        return 115;
     }
 
-    static write(buffer: IByteBuffer, packet: TripleString | null) {
+    write(buffer: IByteBuffer, packet: TripleString | null) {
         if (packet === null) {
             buffer.writeInt(0);
             return;
@@ -24,7 +24,7 @@ class TripleString {
         buffer.writeString(packet.right);
     }
 
-    static read(buffer: IByteBuffer): TripleString | null {
+    read(buffer: IByteBuffer): TripleString | null {
         const length = buffer.readInt();
         if (length === 0) {
             return null;
